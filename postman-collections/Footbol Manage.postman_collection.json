@@ -1,0 +1,791 @@
+{
+	"info": {
+		"_postman_id": "57f7a565-b1f7-418f-9a9f-3420def40ae2",
+		"name": "Football Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10091258"
+	},
+	"item": [
+		{
+			"name": "Create Seller Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = JSON.parse(pm.collectionVariables.get(\"teamSchema\"));\r",
+							"const expectedResponse = JSON.parse(pm.collectionVariables.get(\"teamCreatedBody\"));\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201 created\", () => pm.expect(pm.response.code).to.eql(201));\r",
+							"pm.test(\"Check team schema\", () => pm.response.to.have.jsonSchema(schema));\r",
+							"pm.test(\"Response is equal to requserd obj\", () => {\r",
+							"    expectedResponse.id = responseJson.id;\r",
+							"    pm.expect(responseJson).to.eql(expectedResponse);\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"teamSellerId\", responseJson.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{teamCreatedBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/teams/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Seller Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectedResponse = JSON.parse(pm.collectionVariables.get(\"teamCreatedBody\"));\r",
+							"expectedResponse.id = pm.collectionVariables.get(\"teamSellerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Create team is in response\", () => pm.expect(responseJson).to.eql(expectedResponse));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamSellerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamSellerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Team List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectedResponse = JSON.parse(pm.collectionVariables.get(\"teamCreatedBody\"));\r",
+							"expectedResponse.id = pm.collectionVariables.get(\"teamSellerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Create team is in response\", () => {\r",
+							"    const responseTeam = responseJson.find(({id}) => id === expectedResponse.id);\r",
+							"    pm.expect(responseTeam).to.eql(expectedResponse);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/teams",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Seller Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectedResponse = JSON.parse(pm.collectionVariables.get(\"teamUpdatedBody\"));\r",
+							"expectedResponse.id = pm.collectionVariables.get(\"teamSellerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Create team is in response\", () => pm.expect(responseJson).to.eql(expectedResponse));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{teamUpdatedBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamSellerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamSellerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Seller Team Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectedResponse = JSON.parse(pm.collectionVariables.get(\"teamUpdatedBody\"));\r",
+							"expectedResponse.id = pm.collectionVariables.get(\"teamSellerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Create team is in response\", () => pm.expect(responseJson).to.eql(expectedResponse));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamSellerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamSellerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Bayer Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = JSON.parse(pm.collectionVariables.get(\"teamSchema\"));\r",
+							"const expectedResponse = JSON.parse(pm.collectionVariables.get(\"teamCreatedBody\"));\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201 created\", () => pm.expect(pm.response.code).to.eql(201));\r",
+							"pm.test(\"Check team schema\", () => pm.response.to.have.jsonSchema(schema));\r",
+							"pm.test(\"Response is equal to requserd obj\", () => {\r",
+							"    expectedResponse.id = responseJson.id;\r",
+							"    pm.expect(responseJson).to.eql(expectedResponse);\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"teamBayerId\", responseJson.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{teamCreatedBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/teams/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Player",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = JSON.parse(pm.collectionVariables.get(\"playerSchema\"));\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201 created\", () => pm.expect(pm.response.code).to.eql(201));\r",
+							"pm.test(\"Check team schema\", () => pm.response.to.have.jsonSchema(schema));\r",
+							"\r",
+							"pm.collectionVariables.set(\"playerId\", responseJson.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"New Name\",\r\n    \"dateOfBirth\": \"2000-01-01\",\r\n    \"startOfCareer\": \"2010-01-01\",\r\n    \"team\": {{teamSellerId}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Player",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectId = +pm.collectionVariables.get(\"playerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Ids is equal\", () => pm.expect(expectId).to.eql(responseJson.id));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/players/{{playerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"players",
+						"{{playerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Player List",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectedId = pm.collectionVariables.get(\"playerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Create player is in response\", () => {\r",
+							"    const responsePlayer = responseJson.find(({id}) => id === expectedId);\r",
+							"    pm.expect(responsePlayer).not.to.eql(undefined);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8000/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Player",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Validate player update\", () => {\r",
+							"    pm.expect(responseJson.id).to.eql(+pm.collectionVariables.get(\"playerId\"))\r",
+							"    pm.expect(responseJson.fullName).to.eql(pm.collectionVariables.get(\"playerPlayerUpdatedFullName\"))\r",
+							"    pm.expect(responseJson.dateOfBirth).to.eql(pm.collectionVariables.get(\"playerPlayerUpdatedDateOfBirth\"))\r",
+							"    pm.expect(responseJson.startOfCareer).to.eql(pm.collectionVariables.get(\"playerPlayerUpdatedDateOfBirthStartOfCareer\"))\r",
+							"    pm.expect(responseJson.team.id).to.eql(+pm.collectionVariables.get(\"teamSellerId\"))\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\": \"{{playerPlayerUpdatedFullName}}\",\r\n    \"dateOfBirth\": \"{{playerPlayerUpdatedDateOfBirth}}\",\r\n    \"startOfCareer\": \"{{playerPlayerUpdatedDateOfBirthStartOfCareer}}\",\r\n    \"team\": {{teamSellerId}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/players/{{playerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"players",
+						"{{playerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Seller Team Update Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Validate player update\", () => {\r",
+							"    pm.expect(responseJson.id).to.eql(+pm.collectionVariables.get(\"playerId\"))\r",
+							"    pm.expect(responseJson.fullName).to.eql(pm.collectionVariables.get(\"playerPlayerUpdatedFullName\"))\r",
+							"    pm.expect(responseJson.dateOfBirth).to.eql(pm.collectionVariables.get(\"playerPlayerUpdatedDateOfBirth\"))\r",
+							"    pm.expect(responseJson.startOfCareer).to.eql(pm.collectionVariables.get(\"playerPlayerUpdatedDateOfBirthStartOfCareer\"))\r",
+							"    pm.expect(responseJson.team.id).to.eql(+pm.collectionVariables.get(\"teamSellerId\"))\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/players/{{playerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"players",
+						"{{playerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check players of Seller Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const createdPlayerId = +pm.collectionVariables.get(\"playerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Create team is in response\", () => {\r",
+							"    const createdPlayer = responseJson.find(({id}) => id === createdPlayerId);\r",
+							"    pm.expect(createdPlayer).not.to.eql(undefined);\r",
+							"    pm.expect(responseJson.length).to.eql(1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamSellerId}}/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamSellerId}}",
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const expectId = +pm.collectionVariables.get(\"teamBayerId\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Expected id is byayer team id\", () => pm.expect(expectId).to.eql(responseJson.team.id));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"player\": {{playerId}},\r\n    \"team\": {{teamBayerId}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/players/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"players",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validatie Bayer Team After Transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const initialBayerBalance = JSON.parse(pm.collectionVariables.get(\"teamCreatedBody\")).balance;\r",
+							"const playerCost = +pm.collectionVariables.get(\"playerCost\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Bayer team lose player cost\", () => pm.expect(initialBayerBalance - playerCost).to.eql(responseJson.balance));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamBayerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamBayerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validatie Seller Team After Transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const initialBayerBalance = JSON.parse(pm.collectionVariables.get(\"teamUpdatedBody\")).balance;\r",
+							"const playerCost = +pm.collectionVariables.get(\"playerCost\");\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200 OK\", () => pm.expect(pm.response.code).to.eql(200));\r",
+							"pm.test(\"Seller team get player cost\", () => pm.expect(initialBayerBalance + playerCost).to.eql(responseJson.balance));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamSellerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamSellerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Seller Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204 No Content\", () => pm.expect(pm.response.code).to.eql(204));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamSellerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamSellerId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Bayer Team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204 No Content\", () => pm.expect(pm.response.code).to.eql(204));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/teams/{{teamBayerId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"teams",
+						"{{teamBayerId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "teamSchema",
+			"value": "{\"name\": \"string\",\"commissionForTransfer\":\"number\",\"balance\": \"number\"}",
+			"type": "string"
+		},
+		{
+			"key": "teamCreatedBody",
+			"value": "{\"name\": \"New Team\", \"commissionForTransfer\": 0.09, \"balance\": 32790000}",
+			"type": "string"
+		},
+		{
+			"key": "teamSellerId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "teamUpdatedBody",
+			"value": "{\"name\": \"Update Team Name\", \"commissionForTransfer\": 0.03, \"balance\": 100}",
+			"type": "string"
+		},
+		{
+			"key": "teamBayerId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "playerSchema",
+			"value": "{\"fullName\": \"string\", \"dateOfBirth\": \"string\", \"startOfCareer\": \"string\", \"team\": \"object\"}",
+			"type": "string"
+		},
+		{
+			"key": "playerId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "playerPlayerUpdatedFullName",
+			"value": "Updated Name",
+			"type": "string"
+		},
+		{
+			"key": "playerPlayerUpdatedDateOfBirth",
+			"value": "2000-12-31",
+			"type": "string"
+		},
+		{
+			"key": "playerPlayerUpdatedDateOfBirthStartOfCareer",
+			"value": "2012-12-31",
+			"type": "string"
+		},
+		{
+			"key": "playerCost",
+			"value": "559142.69",
+			"type": "string"
+		}
+	]
+}

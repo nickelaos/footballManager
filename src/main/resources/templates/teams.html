@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="commonParts :: head-common(title = 'Teams')">
+</head>
+<body>
+<div class="container">
+
+    <button
+            type="button"
+            class="btn btn-success"
+            style="float: left" data-bs-toggle="modal"
+            data-bs-target="#create-update-modal"
+            onclick="setForm({})"
+    >
+        Add New <i class="bi bi-plus"></i>
+    </button>
+    <table class="table" style="margin-top: 50px">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Commission For Transfer</th>
+            <th scope="col">Balance</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="team-table-body">
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="create-update-modal" tabindex="-1" aria-labelledby="editCreateLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" id="form-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-name">Create New</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div id="team-save-alert"></div>
+                    <div class="mb-3">
+                        <label for="team-name" class="form-label">Name</label>
+                        <input type="text" pattern="[a-zA-Z ]*" class="form-control" id="team-name" minlength="2" maxlength="255" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="team-commission-for-transfer" class="form-label">
+                            Commission For Transfer <span id="team-commission-for-transfer-value"></span>
+                        </label>
+                        <input
+                                type="range"
+                                class="form-range"
+                                id="team-commission-for-transfer"
+                                min="0"
+                                max="0.1"
+                                step="0.01"
+                                onchange="onCommissionChanged()"
+                                required
+                        >
+                    </div>
+                    <div class="mb-3">
+                        <label for="team-balance" class="form-label">Balance</label>
+                        <input type="number" step=".01" class="form-control" id="team-balance" min="0" required>
+                    </div>
+                    <input id="team-id" style="visibility: hidden; height: 0">
+                </div>
+                <div class="modal-footer">
+                    <button id="team-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="save(event)">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="transfer-modal" tabindex="-1" aria-labelledby="transferLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" id="transfer-form">
+                <div class="modal-header">
+                    <h5 class="modal-title" >Transfer Player</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="transfer-alert"></div>
+                    <div style="display: flex;justify-content: space-around;flex-wrap: wrap;align-items: center;">
+                        <select id="transfer-from-team" class="form-select" disabled onchange="onFromTeamChanged()" required>
+                        </select>
+                        <i class="bi bi-arrow-down-short"></i>
+                        <select id="transfer-player" class="form-select" disabled onchange="onPlayerChanged()" required></select>
+                        <i class="bi bi-arrow-down-short"></i>
+                        <select id="transfer-to-team" class="form-select" disabled required></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="transfer-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" onclick="transfer(event)">Transfer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/static/js/teams.js" async defer></script>
+</body>
+</html>

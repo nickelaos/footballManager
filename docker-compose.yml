@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=footballManager
+      - POSTGRES_USER=footballManager
+      - POSTGRES_DB=footballManager
+    networks:
+      - postgres
+
+  footmallmanager:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=footballManager
+      - DB_USER=footballManager
+      - DB_PASSWORD=footballManager
+      - DB_PORT=5432
+      - DB_HOST=host.docker.internal
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge

@@ -1,0 +1,1 @@
+insert into teams (name, balance, commission_for_transfer) values ('Barcelona', 27850000, 0.02), ('Real', 35290000, 0.07)
