@@ -3,18 +3,18 @@ const postPutHeaders = {
 };
 
 const getPlayer = async (id) => {
-    return await fetch(`http://localhost:8080/players/${id}`, {method: 'GET'})
+    return await fetch(`http://localhost:8080/api/players/${id}`, {method: 'GET'})
     .then(response => response.json())
 }
 
 const getPlayers = async () => {
-    await fetch('http://localhost:8080/players/all', {method: 'GET'})
+    await fetch('http://localhost:8080/api/players/all', {method: 'GET'})
    .then(response => response.json())
    .then(players => onPlayerLoaded(players));
 }
 
 const getTeams = async () => {
-    return await fetch('http://localhost:8080/teams', {method: 'GET'})
+    return await fetch('http://localhost:8080/api/teams', {method: 'GET'})
     .then(response => response.json());
 }
 
@@ -77,7 +77,7 @@ const setEmptyForm = () => {
  }
 
 const  updatePlayer = async (id, body) => {
-    return await fetch(`http://localhost:8080/players/${id}`, {
+    return await fetch(`http://localhost:8080/api/players/${id}`, {
            method: 'PUT', headers: postPutHeaders, body: JSON.stringify(body)
        })
            .then(response => {
@@ -91,7 +91,7 @@ const  updatePlayer = async (id, body) => {
 }
 
 const createPlayer = async (body) => {
-     return await fetch(`http://localhost:8080/players`, {
+     return await fetch(`http://localhost:8080/api/players`, {
             method: 'POST', headers: postPutHeaders, body: JSON.stringify(body)
         }).then(response => {
             if ([200, 201, 204].includes(response.status)) {
@@ -123,7 +123,7 @@ const save = (event) => {
 }
 
 const deletePlayer = (id) => {
-    fetch(`http://localhost:8080/players/${id}`, {method: 'DELETE'}).then(() => getPlayers());
+    fetch(`http://localhost:8080/api/players/${id}`, {method: 'DELETE'}).then(() => getPlayers());
 }
 
 const closeModal = () => {

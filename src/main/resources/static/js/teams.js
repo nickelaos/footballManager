@@ -4,18 +4,18 @@ const postPutHeaders = {
 };
 
 const getTeams = () => {
-    fetch('http://localhost:8080/teams', {method: 'GET'})
+    fetch('http://localhost:8080/api/teams', {method: 'GET'})
         .then(response => response.json())
         .then(teams => onTeamLoaded(teams));
 }
 
 const getTeam = (id) => {
-    return fetch(`http://localhost:8080/teams/${id}`, {method: 'GET'})
+    return fetch(`http://localhost:8080/api/teams/${id}`, {method: 'GET'})
         .then(response => response.json());
 }
 
 const updateTeam = (id, body) => {
-    return fetch(`http://localhost:8080/teams/${id}`, {
+    return fetch(`http://localhost:8080/api/teams/${id}`, {
         method: 'PUT', headers: postPutHeaders, body: JSON.stringify(body)
     })
         .then(response => {
@@ -25,8 +25,9 @@ const updateTeam = (id, body) => {
             }
         });
 }
+
 const createTeam = (body) => {
-    return fetch(`http://localhost:8080/teams`, {
+    return fetch(`http://localhost:8080/api/teams`, {
         method: 'POST', headers: postPutHeaders, body: JSON.stringify(body)
     }).then(response => {
         if ([200, 201, 204].includes(response.status)) {
@@ -35,6 +36,7 @@ const createTeam = (body) => {
         }
     });
 }
+
 const deleteTeam = (id) => {
     fetch(`http://localhost:8080/teams/${id}`, {method: 'DELETE'}).then(() => getTeams());
 }
@@ -101,7 +103,8 @@ const onCommissionChanged = () => {
 }
 
 const onTeamLoaded = (teams) => {
-    const tableContent = teams.reduce((a, b) => a + tableBuilder(b), '');
+    const tableContent = teams && teams.reduce((a, b) => a + tableBuilder(b), '');
+    if (!tableContent) return;
 
     const tableBody = document.getElementById('team-table-body');
     tableBody.innerHTML = tableContent;
